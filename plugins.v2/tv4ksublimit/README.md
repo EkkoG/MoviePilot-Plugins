@@ -1,4 +1,4 @@
-# 电视剧 4K 订阅分辨率锁定（`Tv4kSubLimit`）
+# 电视剧4K订阅锁（`Tv4kSubLimit`）
 
 当**电视剧**任务通过订阅/搜索等方式加入下载，且种子元信息中的分辨率为 **4K / 2160p** 时，自动将对应**电视剧订阅**的「分辨率」设为 `4K|2160p|x2160`（与社区插件「订阅规则自动填充」中 4K 分支一致，便于与主程序筛选规则对齐），减少后续继续匹配到 1080p 等非 4K 资源的情况。
 
@@ -13,10 +13,27 @@
 1. 在 MoviePilot **设置 → 插件 → 插件市场** 中，将插件仓库地址设为  
    [https://github.com/EkkoG/MoviePilot-Plugins-E](https://github.com/EkkoG/MoviePilot-Plugins-E)  
    （需可访问的 Git 地址，具体以 MoviePilot 版本说明为准。）
-2. 在市场列表中找到 **电视剧 4K 订阅分辨率锁定**（或插件 ID：`Tv4kSubLimit`），安装并启用。
+2. 在市场列表中找到 **电视剧4K订阅锁**（或插件 ID：`Tv4kSubLimit`），安装并启用。
 3. 在插件页打开 **启用**；按需调整「仅当订阅未设置分辨率时写入」等选项。
 
-若手动部署：将本目录 `tv4ksublimit` 复制到 MoviePilot 对应 `plugins.v2` 下，并确保仓库根目录 `package.json` 中已登记该插件（合并到主市场仓库时需把 `Tv4kSubLimit` 条目并入总 `package.json`）。
+若手动部署：将本目录 `tv4ksublimit` 复制到 MoviePilot 对应 `plugins.v2` 下，并确保仓库根目录 **`package.v2.json`** 中已登记该插件（合并到主市场仓库时需把 `Tv4kSubLimit` 条目并入总 `package.v2.json`）。
+
+### MoviePilot 对仓库目录的要求（避免安装 404）
+
+主程序会从 GitHub **拉取固定路径**（与 [PluginHelper](https://github.com/jxxghp/MoviePilot) 中实现一致）：
+
+- 根目录：**`package.v2.json`**（v2 插件清单；当前 MoviePilot 在 v2 模式下会优先请求该文件）
+- v2 插件代码：`plugins.v2/{插件ID小写}/`，本插件为 **`plugins.v2/tv4ksublimit/`**（插件 ID `Tv4kSubLimit` 会转为小写目录名）
+
+安装时请求大致为：`GET .../repos/{用户名}/{仓库名}/contents/plugins.v2/tv4ksublimit`。若返回 **404**，说明远程仓库里**还没有这条路径**，常见原因：
+
+1. **代码未推送到 GitHub**（仓库仍是空的，或只建了仓库没有 `git push`）。
+2. **默认分支不是 `main`**：MoviePilot 拉清单时使用 `raw.githubusercontent.com/.../main/package.v2.json`。若默认分支是 `master`，请在 GitHub 仓库 **Settings → General → Default branch** 改为 `main`，或把本地分支推成 `main` 并设为默认。
+3. **目录名不一致**：必须是 `plugins.v2`（带点）、插件文件夹名必须为 **`tv4ksublimit`**（全小写）。
+
+推送后可在浏览器打开（将 `EkkoG/MoviePilot-Plugins-E` 换成你的仓库）核对：  
+[https://github.com/EkkoG/MoviePilot-Plugins-E/tree/main/plugins.v2/tv4ksublimit](https://github.com/EkkoG/MoviePilot-Plugins-E/tree/main/plugins.v2/tv4ksublimit)  
+能打开则说明路径正确。若仓库为**私有**，需在 MoviePilot 中配置可用的 **GitHub Token**（见官方文档中 `GITHUB_TOKEN` / 插件仓库相关说明）。
 
 ## 配置说明
 

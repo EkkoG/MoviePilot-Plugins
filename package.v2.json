@@ -1,13 +1,12 @@
 {
   "Tv4kSubLimit": {
-    "name": "电视剧 4K 订阅分辨率锁定",
+    "name": "电视剧4K订阅锁",
     "description": "电视剧：当下载的种子为 4K（2160p）时，将对应订阅的分辨率限制为 4K，避免后续下到非 4K 资源。",
     "labels": "订阅",
     "version": "1.0.0",
     "icon": "teamwork.png",
     "author": "EkkoG",
     "level": 2,
-    "v2": true,
     "history": {
       "v1.0.0": "首次发布：参考订阅规则自动填充的 DownloadAdded 流程，电视剧 4K 下载后写入订阅分辨率 4K|2160p|x2160"
     }

@@ -16,10 +16,9 @@ RESOLUTION_4K_PATTERN = "4K|2160p|x2160"
 
 
 class Tv4kSubLimit(_PluginBase):
-    plugin_name = "电视剧 4K 订阅分辨率锁定"
+    plugin_name = "电视剧4K订阅锁"
     plugin_desc = (
-        "电视剧：当某次下载的种子为 4K（2160p）时，将对应电视剧订阅的分辨率限制为 4K，"
-        "避免后续订阅/搜索再下到非 4K 资源。"
+        "电视剧在下载到 4K/2160p 种子后，将对应订阅的分辨率锁定为 4K，减少后续匹配到非 4K 资源。"
     )
     plugin_icon = "teamwork.png"
     plugin_version = "1.0.0"

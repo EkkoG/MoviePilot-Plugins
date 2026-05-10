@@ -8,7 +8,7 @@
 
 | 插件 ID | 说明 |
 |---------|------|
-| [Tv4kSubLimit](plugins.v2/tv4ksublimit/README.md) | 电视剧：4K 下载后将订阅分辨率锁定为 4K |
+| [Tv4kSubLimit](plugins.v2/tv4ksublimit/README.md) | 电视剧 4K 下载后锁定订阅分辨率 |
 
 各插件的详细说明、安装与配置请查看对应目录内的 `README.md`。
 
@@ -16,12 +16,14 @@
 
 ```
 LICENSE
-package.json                 # 插件市场元数据（插件 ID → 版本、说明等）
+package.v2.json              # v2 插件市场清单（插件 ID → 版本、说明等）
 plugins.v2/
   tv4ksublimit/
     README.md                  # 本插件说明
     __init__.py                # 插件入口
 ```
+
+安装若提示 **404 / get-repository-content**：表示 GitHub 上还没有 `plugins.v2/tv4ksublimit` 或根目录 **`package.v2.json`**（常见是未 `git push`、默认分支不是 `main`）。详见 [Tv4kSubLimit README](plugins.v2/tv4ksublimit/README.md) 中的 **「MoviePilot 对仓库目录的要求」** 小节。
 
 ## 许可证
 
