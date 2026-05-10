@@ -23,7 +23,7 @@ class Tv4kSubLimit(_PluginBase):
     plugin_icon = "teamwork.png"
     plugin_version = "1.0.0"
     plugin_author = "EkkoG"
-    author_url = "https://github.com/EkkoG/MoviePilot-Plugins-E"
+    author_url = "https://github.com/EkkoG/MoviePilot-Plugins"
     plugin_config_prefix = "tv4ksublimit_"
     plugin_order = 27
     auth_level = 2

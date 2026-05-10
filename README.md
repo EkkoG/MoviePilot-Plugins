@@ -1,8 +1,8 @@
-# MoviePilot-Plugins-E
+# MoviePilot-Plugins
 
 本仓库为 [MoviePilot](https://github.com/jxxghp/MoviePilot) 第三方插件集合（v2 插件目录结构）。
 
-**仓库地址：** [https://github.com/EkkoG/MoviePilot-Plugins-E](https://github.com/EkkoG/MoviePilot-Plugins-E)
+**仓库地址：** [https://github.com/EkkoG/MoviePilot-Plugins](https://github.com/EkkoG/MoviePilot-Plugins)
 
 ## 插件列表
 

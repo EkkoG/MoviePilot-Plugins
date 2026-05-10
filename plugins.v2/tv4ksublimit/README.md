@@ -11,7 +11,7 @@
 ## 安装
 
 1. 在 MoviePilot **设置 → 插件 → 插件市场** 中，将插件仓库地址设为  
-   [https://github.com/EkkoG/MoviePilot-Plugins-E](https://github.com/EkkoG/MoviePilot-Plugins-E)  
+   [https://github.com/EkkoG/MoviePilot-Plugins](https://github.com/EkkoG/MoviePilot-Plugins)  
    （需可访问的 Git 地址，具体以 MoviePilot 版本说明为准。）
 2. 在市场列表中找到 **电视剧4K订阅锁**（或插件 ID：`Tv4kSubLimit`），安装并启用。
 3. 在插件页打开 **启用**；按需调整「仅当订阅未设置分辨率时写入」等选项。
