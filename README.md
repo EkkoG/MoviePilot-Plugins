@@ -23,8 +23,6 @@ plugins.v2/
     __init__.py                # 插件入口
 ```
 
-安装若提示 **404 / get-repository-content**：表示 GitHub 上还没有 `plugins.v2/tv4ksublimit` 或根目录 **`package.v2.json`**（常见是未 `git push`、默认分支不是 `main`）。详见 [Tv4kSubLimit README](plugins.v2/tv4ksublimit/README.md) 中的 **「MoviePilot 对仓库目录的要求」** 小节。
-
 ## 许可证
 
 本仓库代码以 [MIT License](LICENSE) 授权。MoviePilot 主程序、站点资源与媒体内容仍适用其各自许可与法律法规；使用本仓库插件时请遵守所在站点与版权规定。
