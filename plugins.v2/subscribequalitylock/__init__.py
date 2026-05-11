@@ -21,17 +21,17 @@ EFFECT_PATTERN_HDR10 = "HDR10(?!\\s*\\+)(?!Plus)"
 EFFECT_PATTERN_HDR = "[\\s.]+HDR[\\s.]+|\\bHDR\\b"
 
 
-class Tv4kSubLimit(_PluginBase):
+class SubscribeQualityLock(_PluginBase):
     plugin_name = "电视剧订阅画质锁"
     plugin_desc = (
         "电视剧在下载到 4K/2160p 种子后，可按开关分别将订阅分辨率锁定为 4K、将订阅特效按"
         "DV > HDR10+ > HDR10 > HDR 优先级写入（与订阅规则自动填充的特效正则风格一致）。"
     )
     plugin_icon = "teamwork.png"
-    plugin_version = "1.2.0"
+    plugin_version = "2.0.0"
     plugin_author = "EkkoG"
     author_url = "https://github.com/EkkoG/MoviePilot-Plugins"
-    plugin_config_prefix = "tv4ksublimit_"
+    plugin_config_prefix = "subscribequalitylock_"
     plugin_order = 27
     auth_level = 2
 

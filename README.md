@@ -8,7 +8,7 @@
 
 | 插件 ID | 说明 |
 |---------|------|
-| [Tv4kSubLimit](plugins.v2/tv4ksublimit/README.md) | 电视剧订阅画质锁：4K 分辨率 + HDR/DV 特效写入订阅规则 |
+| [SubscribeQualityLock](plugins.v2/subscribequalitylock/README.md) | 电视剧订阅画质锁：4K 分辨率 + HDR/DV 特效写入订阅规则 |
 
 各插件的详细说明、安装与配置请查看对应目录内的 `README.md`。
 
@@ -18,7 +18,7 @@
 LICENSE
 package.v2.json              # v2 插件市场清单（插件 ID → 版本、说明等）
 plugins.v2/
-  tv4ksublimit/
+  subscribequalitylock/
     README.md                  # 本插件说明
     __init__.py                # 插件入口
 ```

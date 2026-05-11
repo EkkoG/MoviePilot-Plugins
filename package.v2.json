@@ -1,17 +1,18 @@
 {
-  "Tv4kSubLimit": {
+  "SubscribeQualityLock": {
     "name": "电视剧订阅画质锁",
     "description": "电视剧：4K/2160p 下载后可分别锁定订阅分辨率与 HDR/DV 特效（独立开关）；支持仅空缺写入。",
     "labels": "订阅",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "icon": "teamwork.png",
     "author": "EkkoG",
     "level": 2,
     "history": {
-      "v1.2.0": "新增「锁定分辨率」「锁定特效」独立开关；两项均关闭时不改订阅",
-      "v1.1.1": "插件显示名改为「电视剧订阅画质锁」，与 4K+HDR/DV 能力一致",
-      "v1.1.0": "4K 下载后除分辨率外，根据 meta.resource_effect 按 DV > HDR10+ > HDR10 > HDR 写入订阅 effect；仅空缺写入对分辨率与特效分别生效",
-      "v1.0.0": "首次发布：参考订阅规则自动填充的 DownloadAdded 流程，电视剧 4K 下载后写入订阅分辨率 4K|2160p|x2160"
+      "v2.0.0": "插件 ID 与目录更名为 SubscribeQualityLock / subscribequalitylock；配置前缀 subscribequalitylock_（与旧版不兼容）",
+      "v1.2.0": "独立开关：锁定分辨率、锁定特效",
+      "v1.1.1": "显示名：电视剧订阅画质锁",
+      "v1.1.0": "4K 下载后写入分辨率并按优先级写入 effect",
+      "v1.0.0": "首次发布：4K 下载后锁定订阅分辨率"
     }
   }
 }
