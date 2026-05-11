@@ -1,13 +1,14 @@
 {
   "Tv4kSubLimit": {
     "name": "电视剧订阅画质锁",
-    "description": "电视剧：4K/2160p 下载后锁定订阅分辨率为 4K|2160p|x2160；若元信息含 HDR/DV，按优先级写入订阅特效正则。",
+    "description": "电视剧：4K/2160p 下载后可分别锁定订阅分辨率与 HDR/DV 特效（独立开关）；支持仅空缺写入。",
     "labels": "订阅",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "icon": "teamwork.png",
     "author": "EkkoG",
     "level": 2,
     "history": {
+      "v1.2.0": "新增「锁定分辨率」「锁定特效」独立开关；两项均关闭时不改订阅",
       "v1.1.1": "插件显示名改为「电视剧订阅画质锁」，与 4K+HDR/DV 能力一致",
       "v1.1.0": "4K 下载后除分辨率外，根据 meta.resource_effect 按 DV > HDR10+ > HDR10 > HDR 写入订阅 effect；仅空缺写入对分辨率与特效分别生效",
       "v1.0.0": "首次发布：参考订阅规则自动填充的 DownloadAdded 流程，电视剧 4K 下载后写入订阅分辨率 4K|2160p|x2160"

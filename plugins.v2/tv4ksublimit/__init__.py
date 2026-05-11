@@ -24,11 +24,11 @@ EFFECT_PATTERN_HDR = "[\\s.]+HDR[\\s.]+|\\bHDR\\b"
 class Tv4kSubLimit(_PluginBase):
     plugin_name = "电视剧订阅画质锁"
     plugin_desc = (
-        "电视剧在下载到 4K/2160p 种子后，将对应订阅的分辨率锁定为 4K，并在识别到 HDR/DV 时"
-        "按 DV > HDR10+ > HDR10 > HDR 优先级锁定特效（与订阅规则自动填充的特效正则风格一致）。"
+        "电视剧在下载到 4K/2160p 种子后，可按开关分别将订阅分辨率锁定为 4K、将订阅特效按"
+        "DV > HDR10+ > HDR10 > HDR 优先级写入（与订阅规则自动填充的特效正则风格一致）。"
     )
     plugin_icon = "teamwork.png"
-    plugin_version = "1.1.1"
+    plugin_version = "1.2.0"
     plugin_author = "EkkoG"
     author_url = "https://github.com/EkkoG/MoviePilot-Plugins"
     plugin_config_prefix = "tv4ksublimit_"
@@ -36,6 +36,8 @@ class Tv4kSubLimit(_PluginBase):
     auth_level = 2
 
     _enabled: bool = False
+    _lock_resolution: bool = True
+    _lock_effect: bool = True
     _only_when_empty: bool = False
     _clear_history: bool = False
     _clear_handle: bool = False
@@ -48,6 +50,8 @@ class Tv4kSubLimit(_PluginBase):
         if not config:
             return
         self._enabled = config.get("enabled")
+        self._lock_resolution = config.get("lock_resolution", True)
+        self._lock_effect = config.get("lock_effect", True)
         self._only_when_empty = config.get("only_when_empty")
         self._clear_history = config.get("clear_history")
         self._clear_handle = config.get("clear_handle")
@@ -67,6 +71,8 @@ class Tv4kSubLimit(_PluginBase):
     def __persist_config(self):
         self.update_config({
             "enabled": self._enabled,
+            "lock_resolution": self._lock_resolution,
+            "lock_effect": self._lock_effect,
             "only_when_empty": self._only_when_empty,
             "clear_history": self._clear_history,
             "clear_handle": self._clear_handle,
@@ -158,8 +164,12 @@ class Tv4kSubLimit(_PluginBase):
         if not self.__is_4k(resource_pix):
             return
 
+        if not self._lock_resolution and not self._lock_effect:
+            logger.debug("订阅画质锁：已关闭分辨率与特效锁定，跳过")
+            return
+
         resource_effect = meta.resource_effect if meta else None
-        target_effect = self.__effect_pattern_from_meta(resource_effect)
+        target_effect = self.__effect_pattern_from_meta(resource_effect) if self._lock_effect else None
 
         season = self.__season_arg(download_history)
         subscribes = self._subscribeoper.list_by_tmdbid(
@@ -186,16 +196,17 @@ class Tv4kSubLimit(_PluginBase):
                 continue
             update_dict: Dict[str, Any] = {}
 
-            if not (self._only_when_empty and getattr(subscribe, "resolution", None)):
-                current_res = getattr(subscribe, "resolution", None) or ""
-                if current_res != target_resolution:
-                    update_dict["resolution"] = target_resolution
-            else:
-                logger.info(
-                    f"订阅画质锁：订阅「{subscribe.name}」已设置分辨率，跳过分辨率（仅空缺时写入已开启）"
-                )
+            if self._lock_resolution:
+                if not (self._only_when_empty and getattr(subscribe, "resolution", None)):
+                    current_res = getattr(subscribe, "resolution", None) or ""
+                    if current_res != target_resolution:
+                        update_dict["resolution"] = target_resolution
+                else:
+                    logger.info(
+                        f"订阅画质锁：订阅「{subscribe.name}」已设置分辨率，跳过分辨率（仅空缺时写入已开启）"
+                    )
 
-            if target_effect:
+            if self._lock_effect and target_effect:
                 if not (self._only_when_empty and getattr(subscribe, "effect", None)):
                     current_fx = getattr(subscribe, "effect", None) or ""
                     if current_fx != target_effect:
@@ -221,7 +232,7 @@ class Tv4kSubLimit(_PluginBase):
             history = self.get_data("history") or []
             history.append({
                 "name": subscribe.name,
-                "type": "4K 下载后锁定分辨率/特效",
+                "type": "4K 下载后更新订阅规则",
                 "content": json.dumps(update_dict, ensure_ascii=False),
                 "time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())),
             })
@@ -269,8 +280,39 @@ class Tv4kSubLimit(_PluginBase):
                                     {
                                         "component": "VSwitch",
                                         "props": {
+                                            "model": "lock_resolution",
+                                            "label": "锁定分辨率（4K）",
+                                        },
+                                    }
+                                ],
+                            },
+                            {
+                                "component": "VCol",
+                                "props": {"cols": 12, "md": 4},
+                                "content": [
+                                    {
+                                        "component": "VSwitch",
+                                        "props": {
+                                            "model": "lock_effect",
+                                            "label": "锁定特效（HDR/DV）",
+                                        },
+                                    }
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        "component": "VRow",
+                        "content": [
+                            {
+                                "component": "VCol",
+                                "props": {"cols": 12, "md": 4},
+                                "content": [
+                                    {
+                                        "component": "VSwitch",
+                                        "props": {
                                             "model": "only_when_empty",
-                                            "label": "仅当订阅未设置分辨率时写入",
+                                            "label": "仅空缺时写入（分辨率/特效分项）",
                                         },
                                     }
                                 ],
@@ -288,11 +330,6 @@ class Tv4kSubLimit(_PluginBase):
                                     }
                                 ],
                             },
-                        ],
-                    },
-                    {
-                        "component": "VRow",
-                        "content": [
                             {
                                 "component": "VCol",
                                 "props": {"cols": 12, "md": 4},
@@ -320,10 +357,9 @@ class Tv4kSubLimit(_PluginBase):
                                         "props": {
                                             "type": "info",
                                             "variant": "tonal",
-                                            "text": "监听「下载添加」事件：仅处理电视剧；根据种子元信息识别 4K/2160p；"
-                                            "将订阅分辨率规范为与 SubscribeGroup 相同的正则（4K|2160p|x2160）。"
-                                            "若元信息含 HDR/DV，则按 DV > HDR10+ > HDR10 > HDR 优先级写入订阅「特效」正则。"
-                                            "默认会覆盖已有分辨率/特效；「仅当订阅未设置分辨率时写入」对分辨率与特效分别生效。",
+                                            "text": "监听「下载添加」事件：仅处理电视剧；须先识别为 4K/2160p 才触发。"
+                                            "「锁定分辨率」「锁定特效」可分别关闭；开启项写入订阅时与 SubscribeGroup 正则风格一致。"
+                                            "「仅空缺时写入」对分辨率与特效分别判断。两项锁定均关闭时本插件不修改订阅。",
                                         },
                                     }
                                 ],
@@ -334,6 +370,8 @@ class Tv4kSubLimit(_PluginBase):
             }
         ], {
             "enabled": False,
+            "lock_resolution": True,
+            "lock_effect": True,
             "only_when_empty": False,
             "clear_history": False,
             "clear_handle": False,
