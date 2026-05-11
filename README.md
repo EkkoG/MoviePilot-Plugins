@@ -8,7 +8,7 @@
 
 | 插件 ID | 说明 |
 |---------|------|
-| [Tv4kSubLimit](plugins.v2/tv4ksublimit/README.md) | 电视剧 4K 下载后锁定订阅分辨率；可选按 HDR/DV 写入特效正则 |
+| [Tv4kSubLimit](plugins.v2/tv4ksublimit/README.md) | 电视剧订阅画质锁：4K 分辨率 + HDR/DV 特效写入订阅规则 |
 
 各插件的详细说明、安装与配置请查看对应目录内的 `README.md`。
 

@@ -22,13 +22,13 @@ EFFECT_PATTERN_HDR = "[\\s.]+HDR[\\s.]+|\\bHDR\\b"
 
 
 class Tv4kSubLimit(_PluginBase):
-    plugin_name = "电视剧4K订阅锁"
+    plugin_name = "电视剧订阅画质锁"
     plugin_desc = (
         "电视剧在下载到 4K/2160p 种子后，将对应订阅的分辨率锁定为 4K，并在识别到 HDR/DV 时"
         "按 DV > HDR10+ > HDR10 > HDR 优先级锁定特效（与订阅规则自动填充的特效正则风格一致）。"
     )
     plugin_icon = "teamwork.png"
-    plugin_version = "1.1.0"
+    plugin_version = "1.1.1"
     plugin_author = "EkkoG"
     author_url = "https://github.com/EkkoG/MoviePilot-Plugins"
     plugin_config_prefix = "tv4ksublimit_"
@@ -56,13 +56,13 @@ class Tv4kSubLimit(_PluginBase):
             self.del_data(key="history_handle")
             self._clear_handle = False
             self.__persist_config()
-            logger.info("电视剧4K锁定：已清空「已处理下载」记录")
+            logger.info("订阅画质锁：已清空「已处理下载」记录")
 
         if self._clear_history:
             self.del_data(key="history")
             self._clear_history = False
             self.__persist_config()
-            logger.info("电视剧4K锁定：已清空操作历史")
+            logger.info("订阅画质锁：已清空操作历史")
 
     def __persist_config(self):
         self.update_config({
@@ -135,18 +135,18 @@ class Tv4kSubLimit(_PluginBase):
             return
         event_data = event.event_data
         if not event_data.get("hash") or not event_data.get("context"):
-            logger.warning(f"电视剧4K锁定：下载事件数据不完整 {event_data}")
+            logger.warning(f"订阅画质锁：下载事件数据不完整 {event_data}")
             return
 
         download_hash = event_data.get("hash")
         history_handle: List[str] = self.get_data("history_handle") or []
         if download_hash in history_handle:
-            logger.debug(f"电视剧4K锁定：种子 hash {download_hash} 已处理过，跳过")
+            logger.debug(f"订阅画质锁：种子 hash {download_hash} 已处理过，跳过")
             return
 
         download_history = self._downloadhistoryoper.get_by_hash(download_hash)
         if not download_history:
-            logger.warning(f"电视剧4K锁定：hash {download_hash} 无下载历史记录")
+            logger.warning(f"订阅画质锁：hash {download_hash} 无下载历史记录")
             return
 
         if download_history.type != "电视剧":
@@ -168,7 +168,7 @@ class Tv4kSubLimit(_PluginBase):
         )
         if not subscribes:
             logger.info(
-                f"电视剧4K锁定：{download_history.title} tmdb={download_history.tmdbid} "
+                f"订阅画质锁：{download_history.title} tmdb={download_history.tmdbid} "
                 f"未找到匹配订阅（季参数 {season}）"
             )
             return
@@ -192,7 +192,7 @@ class Tv4kSubLimit(_PluginBase):
                     update_dict["resolution"] = target_resolution
             else:
                 logger.info(
-                    f"电视剧4K锁定：订阅「{subscribe.name}」已设置分辨率，跳过分辨率（仅空缺时写入已开启）"
+                    f"订阅画质锁：订阅「{subscribe.name}」已设置分辨率，跳过分辨率（仅空缺时写入已开启）"
                 )
 
             if target_effect:
@@ -202,11 +202,11 @@ class Tv4kSubLimit(_PluginBase):
                         update_dict["effect"] = target_effect
                 else:
                     logger.info(
-                        f"电视剧4K锁定：订阅「{subscribe.name}」已设置特效，跳过特效（仅空缺时写入已开启）"
+                        f"订阅画质锁：订阅「{subscribe.name}」已设置特效，跳过特效（仅空缺时写入已开启）"
                     )
 
             if not update_dict:
-                logger.debug(f"电视剧4K锁定：订阅「{subscribe.name}」无需更新（已与目标一致或受选项跳过）")
+                logger.debug(f"订阅画质锁：订阅「{subscribe.name}」无需更新（已与目标一致或受选项跳过）")
                 continue
 
             self._subscribeoper.update(subscribe.id, update_dict)
@@ -216,7 +216,7 @@ class Tv4kSubLimit(_PluginBase):
                 parts.append(f"分辨率={update_dict['resolution']}")
             if "effect" in update_dict:
                 parts.append(f"特效={update_dict['effect']}")
-            logger.info(f"电视剧4K锁定：已将订阅「{subscribe.name}」更新：{', '.join(parts)}")
+            logger.info(f"订阅画质锁：已将订阅「{subscribe.name}」更新：{', '.join(parts)}")
 
             history = self.get_data("history") or []
             history.append({
